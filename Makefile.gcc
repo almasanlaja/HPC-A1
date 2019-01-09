@@ -1,8 +1,8 @@
 TARGET	= libmatmult.so
-LIBSRCS	= 
-LIBOBJS	=
+LIBSRCS	= source_gcc.c 
+LIBOBJS	= $(LIBSRCS:.c=.o)
 
-OPT	= -g 
+OPT	= -g -L/usr/lib64/atlas -lsatlas
 PIC	= -fPIC
 
 CC	= gcc
