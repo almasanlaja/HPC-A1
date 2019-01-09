@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sunperf.h>
 
 void
 matmult_nat(int m, int n, int k, double **A, double **B, double **C) {
@@ -14,4 +15,9 @@ matmult_nat(int m, int n, int k, double **A, double **B, double **C) {
             C[i][j] = tmp;
         }
     }
+}
+
+void
+matmult_lib(int m, int n, int k, double **A, double **B, double **C) {
+	dgemm('N', 'N', m ,m , n, 1.0, *A, k, *B, n, 0.0, *C, n);
 }
