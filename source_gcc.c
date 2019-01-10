@@ -163,3 +163,126 @@ matmult_knm(int m, int n, int k, double **A, double **B, double **C) {
         }
     }
 }
+
+
+// Blocks
+
+void 
+matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
+
+    int i, j, l;
+
+    for(i = 0; i < m; i++){
+        for(j = 0; j < n; j++){
+		C[i][j] = 0;
+    	}
+    }
+
+    int ns, ms, ks, rns, rms, rks;
+	
+    ns = n/bs;
+    ms = m/bs;
+    ks = k/bs;
+
+    rns = n%bs;
+    rms = m%bs;
+    rks = k%bs;
+
+    int is, js, ls;
+
+    for (is=0; is < ms; is++){
+	for(js=0; js < ns; js++){
+		for(ls=0; ls < ks; ls++){
+			for(j = js*bs; j < (js+1)*bs; j++){
+				for(i = is*bs; i < (is+1)*bs; i++){
+				    double tmp1 = 0.0;
+				    for(l = ls*bs; l < (ls+1)*bs; l++){
+					tmp1 += A[i][l] * B[l][j];
+				    }
+				    C[i][j] += tmp1;
+				}
+    			}
+		}
+		
+		for(j = js*bs; j < (js+1)*bs; j++){
+			for(i = is*bs; i < (is+1)*bs; i++){
+			    double tmp2 = 0.0;
+			    for(l = k-rks; l < k; l++){
+				tmp2 += A[i][l] * B[l][j];
+			    }
+			    C[i][j] += tmp2;
+			}
+		}
+	}
+	for(ls=0; ls < ks; ls++){
+		for(j = n-rns; j < n; j++){
+			for(i = is*bs; i < (is+1)*bs; i++){
+			    double tmp3 = 0.0;
+			    for(l = ls*bs; l < (ls+1)*bs; l++){
+				tmp3 += A[i][l] * B[l][j];
+			    }
+			    C[i][j] += tmp3;
+			}
+		}
+	}
+	
+	for(i = is*bs; i < (is+1)*bs; i++){
+		for(j = n-rns; j < n; j++){
+		    double tmp4 = 0.0;
+		    for(l = k-rks; l < k; l++){
+			tmp4 += A[i][l] * B[l][j];
+		    }
+		    C[i][j] += tmp4;
+		}
+	}
+
+    }
+
+
+    for(js=0; js < ns; js++){
+		for(ls=0; ls < ks; ls++){
+			for(j = js*bs; j < (js+1)*bs; j++){
+				for(i = m-rms; i < m; i++){
+				    double tmp5 = 0.0;
+				    for(l = ls*bs; l < (ls+1)*bs; l++){
+					tmp5 += A[i][l] * B[l][j];
+				    }
+				    C[i][j] += tmp5;
+				}
+			}
+		}
+		
+		for(i = m-rms; i < m; i++){
+			for(j = js*bs; j < (js+1)*bs; j++){
+			    double tmp6 = 0.0;
+			    for(l = k-rks; l < k; l++){
+				tmp6 += A[i][l] * B[l][j];
+			    }
+			    C[i][j] += tmp6;
+			}
+		}
+	}
+	for(ls=0; ls < ks; ls++){
+		for(j = n-rns; j < n; j++){
+			for(i = m-rms; i < m; i++){
+			    double tmp7 = 0.0;
+			    for(l = ls*bs; l < (ls+1)*bs; l++){
+				tmp7 += A[i][l] * B[l][j];
+			    }
+			    C[i][j] += tmp7;
+			}
+		}
+	}
+
+	for(i = m-rms; i < m; i++){
+		for(j = n-rns; j < n; j++){
+		    double tmp8 = 0.0;
+		    for(l = k-rks; l < k; l++){
+			tmp8 += A[i][l] * B[l][j];
+		    }
+		    C[i][j] += tmp8;
+		}
+	}
+    
+    
+}

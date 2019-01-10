@@ -194,8 +194,8 @@ matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
     for (is=0; is < ms; is++){
 	for(js=0; js < ns; js++){
 		for(ls=0; ls < ks; ls++){
-			for(i = is*bs; i < (is+1)*bs; i++){
-				for(j = js*bs; j < (js+1)*bs; j++){
+			for(j = js*bs; j < (js+1)*bs; j++){
+				for(i = is*bs; i < (is+1)*bs; i++){
 				    double tmp1 = 0.0;
 				    for(l = ls*bs; l < (ls+1)*bs; l++){
 					tmp1 += A[i][l] * B[l][j];
@@ -205,8 +205,8 @@ matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
     			}
 		}
 		
-		for(i = is*bs; i < (is+1)*bs; i++){
-			for(j = js*bs; j < (js+1)*bs; j++){
+		for(j = js*bs; j < (js+1)*bs; j++){
+			for(i = is*bs; i < (is+1)*bs; i++){
 			    double tmp2 = 0.0;
 			    for(l = k-rks; l < k; l++){
 				tmp2 += A[i][l] * B[l][j];
@@ -216,8 +216,8 @@ matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
 		}
 	}
 	for(ls=0; ls < ks; ls++){
-		for(i = is*bs; i < (is+1)*bs; i++){
-			for(j = n-rns; j < n; j++){
+		for(j = n-rns; j < n; j++){
+			for(i = is*bs; i < (is+1)*bs; i++){
 			    double tmp3 = 0.0;
 			    for(l = ls*bs; l < (ls+1)*bs; l++){
 				tmp3 += A[i][l] * B[l][j];
@@ -242,8 +242,8 @@ matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
 
     for(js=0; js < ns; js++){
 		for(ls=0; ls < ks; ls++){
-			for(i = m-rms; i < m; i++){
-				for(j = js*bs; j < (js+1)*bs; j++){
+			for(j = js*bs; j < (js+1)*bs; j++){
+				for(i = m-rms; i < m; i++){
 				    double tmp5 = 0.0;
 				    for(l = ls*bs; l < (ls+1)*bs; l++){
 					tmp5 += A[i][l] * B[l][j];
@@ -264,8 +264,8 @@ matmult_blk(int m, int n, int k, double **A, double **B, double **C, int bs) {
 		}
 	}
 	for(ls=0; ls < ks; ls++){
-		for(i = m-rms; i < m; i++){
-			for(j = n-rns; j < n; j++){
+		for(j = n-rns; j < n; j++){
+			for(i = m-rms; i < m; i++){
 			    double tmp7 = 0.0;
 			    for(l = ls*bs; l < (ls+1)*bs; l++){
 				tmp7 += A[i][l] * B[l][j];
